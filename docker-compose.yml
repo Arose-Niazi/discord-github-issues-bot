@@ -1,0 +1,22 @@
+services:
+  bugsnitch:
+    build: .
+    container_name: bugsnitch
+    restart: unless-stopped
+    env_file: .env
+    expose:
+      - "3000"
+    networks:
+      - proxy
+      - internal
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+networks:
+  proxy:
+    external: true
+  internal:
+    external: true
