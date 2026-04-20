@@ -26,15 +26,18 @@ export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssu
     const channel = await client.channels.fetch(channelId);
     if (!channel || !('send' in channel)) return;
 
-    const [user] = await db.select().from(users).where(
-      and(eq(users.discordUserId, trackedIssue.discordUserId), eq(users.guildId, guildId))
-    );
+    // Look up if the closer has a linked Discord account
+    const [closer] = closedBy !== 'Unknown'
+      ? await db.select().from(users).where(
+          and(eq(users.githubUsername, closedBy), eq(users.guildId, guildId))
+        )
+      : [];
 
-    const reportedBy = user?.githubUsername
-      ? `<@${trackedIssue.discordUserId}> (${user.githubUsername})`
-      : `<@${trackedIssue.discordUserId}>`;
+    const closedByDisplay = closer
+      ? `<@${closer.discordUserId}>`
+      : closedBy;
 
-    const embed = issueClosedEmbed(githubIssue, reportedBy, closedBy);
+    const embed = issueClosedEmbed(githubIssue, `<@${trackedIssue.discordUserId}>`, closedByDisplay);
 
     await channel.send({
       content: `<@${trackedIssue.discordUserId}> your issue was closed:`,
