@@ -3,7 +3,8 @@ services:
     build: .
     container_name: bugsnitch
     restart: unless-stopped
-    env_file: .env
+    env_file:
+      - /opt/websites/bugsnitch/.env
     expose:
       - "3000"
     networks:
