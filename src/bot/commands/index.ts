@@ -1,4 +1,4 @@
-import { REST, Routes, SlashCommandBuilder, ChannelType } from 'discord.js';
+import { REST, Routes, SlashCommandBuilder, ChannelType, PermissionFlagsBits } from 'discord.js';
 import { config } from '../../config.js';
 import { logger } from '../../utils/logger.js';
 
@@ -6,6 +6,7 @@ const commands = [
   new SlashCommandBuilder()
     .setName('setup')
     .setDescription('Configure BugSnitch for this server')
+    .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
     .addSubcommand(sub =>
       sub.setName('github')
         .setDescription('Connect a GitHub repository')
