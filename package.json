@@ -2,6 +2,7 @@
   "name": "bugsnitch",
   "version": "1.0.0",
   "description": "Discord bot that snitches bugs to GitHub",
+  "type": "module",
   "private": true,
   "scripts": {
     "dev": "tsx watch src/index.ts",

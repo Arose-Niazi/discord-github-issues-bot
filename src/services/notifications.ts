@@ -24,7 +24,7 @@ export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssu
 
   try {
     const channel = await client.channels.fetch(channelId);
-    if (!channel?.isTextBased()) return;
+    if (!channel || !('send' in channel)) return;
 
     const closedBy = githubIssue.closed_by?.login ?? 'Unknown';
     const embed = issueClosedEmbed(githubIssue, trackedIssue.discordUserId, closedBy);

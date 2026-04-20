@@ -8,8 +8,8 @@ import { eq } from 'drizzle-orm';
 
 const router = Router();
 
-router.post('/webhooks/github/:guildId', async (req: Request, res: Response) => {
-  const { guildId } = req.params;
+router.post('/webhooks/github/:guildId', async (req: Request<{ guildId: string }>, res: Response) => {
+  const guildId = req.params.guildId;
   const signature = req.headers['x-hub-signature-256'] as string | undefined;
   const event = req.headers['x-github-event'] as string | undefined;
 
