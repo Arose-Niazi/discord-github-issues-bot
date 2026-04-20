@@ -3,7 +3,7 @@ import { db } from '../db/index.js';
 import { guilds, issues, users } from '../db/schema.js';
 import { issueClosedEmbed } from '../utils/embeds.js';
 import { logger } from '../utils/logger.js';
-import { eq, and } from 'drizzle-orm';
+import { eq, and, ilike } from 'drizzle-orm';
 import type { GitHubIssue } from './github.js';
 
 export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssue, closedBy: string) {
@@ -29,7 +29,7 @@ export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssu
     // Look up if the closer has a linked Discord account
     const [closer] = closedBy !== 'Unknown'
       ? await db.select().from(users).where(
-          and(eq(users.githubUsername, closedBy), eq(users.guildId, guildId))
+          and(ilike(users.githubUsername, closedBy), eq(users.guildId, guildId))
         )
       : [];
 
