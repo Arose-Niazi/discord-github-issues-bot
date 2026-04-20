@@ -38,8 +38,9 @@ router.post('/webhooks/github/:guildId', async (req: Request<{ guildId: string }
 
   if (event === 'issues' && req.body.action === 'closed') {
     const issue = req.body.issue;
+    const closedBy = req.body.sender?.login ?? 'Unknown';
     logger.info({ guildId, issueNumber: issue.number }, 'Received issue closed event');
-    notifyIssueClosed(guildId, issue).catch(err => {
+    notifyIssueClosed(guildId, issue, closedBy).catch(err => {
       logger.error({ err, guildId }, 'Notification failed');
     });
   }

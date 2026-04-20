@@ -1,12 +1,12 @@
 import { client } from '../bot/client.js';
 import { db } from '../db/index.js';
-import { guilds, issues } from '../db/schema.js';
+import { guilds, issues, users } from '../db/schema.js';
 import { issueClosedEmbed } from '../utils/embeds.js';
 import { logger } from '../utils/logger.js';
 import { eq, and } from 'drizzle-orm';
 import type { GitHubIssue } from './github.js';
 
-export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssue) {
+export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssue, closedBy: string) {
   const [guildConfig] = await db.select().from(guilds).where(eq(guilds.guildId, guildId));
   if (!guildConfig) return;
 
@@ -26,8 +26,15 @@ export async function notifyIssueClosed(guildId: string, githubIssue: GitHubIssu
     const channel = await client.channels.fetch(channelId);
     if (!channel || !('send' in channel)) return;
 
-    const closedBy = githubIssue.closed_by?.login ?? 'Unknown';
-    const embed = issueClosedEmbed(githubIssue, trackedIssue.discordUserId, closedBy);
+    const [user] = await db.select().from(users).where(
+      and(eq(users.discordUserId, trackedIssue.discordUserId), eq(users.guildId, guildId))
+    );
+
+    const reportedBy = user?.githubUsername
+      ? `<@${trackedIssue.discordUserId}> (${user.githubUsername})`
+      : `<@${trackedIssue.discordUserId}>`;
+
+    const embed = issueClosedEmbed(githubIssue, reportedBy, closedBy);
 
     await channel.send({
       content: `<@${trackedIssue.discordUserId}> your issue was closed:`,

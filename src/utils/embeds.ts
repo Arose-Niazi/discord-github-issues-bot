@@ -27,14 +27,14 @@ export function issueCreatedEmbed(issue: GitHubIssue, createdBy: string): EmbedB
     .setTimestamp();
 }
 
-export function issueClosedEmbed(issue: GitHubIssue, discordUserId: string, closedBy: string): EmbedBuilder {
+export function issueClosedEmbed(issue: GitHubIssue, reportedBy: string, closedBy: string): EmbedBuilder {
   return new EmbedBuilder()
     .setColor(COLORS.closed)
     .setTitle(`Issue #${issue.number} Closed: ${issue.title}`)
     .setURL(issue.html_url)
     .addFields(
       { name: 'Closed by', value: closedBy, inline: true },
-      { name: 'Reported by', value: `<@${discordUserId}>`, inline: true },
+      { name: 'Reported by', value: reportedBy, inline: true },
     )
     .setTimestamp();
 }
