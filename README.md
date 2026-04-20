@@ -2,7 +2,7 @@
 
 **BugSnitch** is a Discord bot that lets your community report bugs and request features directly to GitHub — without ever leaving Discord. Connect a repo, set a channel, and your team can create fully-formatted GitHub issues with descriptions, code blocks, labels, and image links right from a Discord modal.
 
-[**Add BugSnitch to your server**](https://discord.com/oauth2/authorize?client_id=1495854456162619442&permissions=2147503104&scope=bot%20applications.commands)
+[**Add BugSnitch to your server**](https://discord.com/oauth2/authorize?client_id=1495854456162619442&permissions=8&scope=bot%20applications.commands)
 
 ---
 
@@ -41,7 +41,7 @@
 
 ### 1. Invite the Bot
 
-[Click here to add BugSnitch to your server](https://discord.com/oauth2/authorize?client_id=1495854456162619442&permissions=2147503104&scope=bot%20applications.commands)
+[Click here to add BugSnitch to your server](https://discord.com/oauth2/authorize?client_id=1495854456162619442&permissions=8&scope=bot%20applications.commands)
 
 The bot requires these permissions:
 - **Send Messages** — to post issue embeds and notifications
